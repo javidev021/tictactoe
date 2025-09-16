@@ -1,0 +1,38 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f4f4f4;
+}
+
+h1 {
+  color: #333;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 5px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border: 2px solid #333;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cell.taken {
+  cursor: not-allowed;
+}
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
