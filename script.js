@@ -1,61 +1,99 @@
-const board = document.getElementById("board");
-const resetBtn = document.getElementById("reset");
+const cells = document.querySelectorAll(".cell");
+const currentPlayerEl = document.getElementById("current-player");
+const statusEl = document.getElementById("game-status");
+const resetGameBtn = document.getElementById("reset-game");
+const resetScoreBtn = document.getElementById("reset-score");
+const scoreXEl = document.getElementById("score-x");
+const scoreOEl = document.getElementById("score-o");
 
 let currentPlayer = "X";
+let board = Array(9).fill("");
+let scoreX = 0;
+let scoreO = 0;
 let gameActive = true;
-let gameState = ["", "", "", "", "", "", "", "", ""];
 
-function createBoard() {
-  board.innerHTML = "";
-  gameState.forEach((cell, index) => {
-    const div = document.createElement("div");
-    div.classList.add("cell");
-    div.dataset.index = index;
-    div.addEventListener("click", handleClick);
-    div.textContent = cell;
-    board.appendChild(div);
-  });
-}
+const winningCombinations = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
 
 function handleClick(e) {
   const index = e.target.dataset.index;
-  if (gameState[index] !== "" || !gameActive) return;
+  if (board[index] !== "" || !gameActive) return;
 
-  gameState[index] = currentPlayer;
+  board[index] = currentPlayer;
   e.target.textContent = currentPlayer;
-  e.target.classList.add("taken");
 
   if (checkWin()) {
-    alert(`Jugador ${currentPlayer} gana!`);
+    statusEl.textContent = `Jugador ${currentPlayer} gana!`;
+    highlightWinner();
+    updateScore();
     gameActive = false;
     return;
   }
 
-  if (!gameState.includes("")) {
-    alert("Empate!");
+  if (board.every((cell) => cell !== "")) {
+    statusEl.textContent = "Empate!";
     gameActive = false;
     return;
   }
 
   currentPlayer = currentPlayer === "X" ? "O" : "X";
+  currentPlayerEl.textContent = currentPlayer;
 }
 
 function checkWin() {
-  const winConditions = [
-    [0,1,2],[3,4,5],[6,7,8], // filas
-    [0,3,6],[1,4,7],[2,5,8], // columnas
-    [0,4,8],[2,4,6]          // diagonales
-  ];
-  return winConditions.some(condition =>
-    condition.every(index => gameState[index] === currentPlayer)
-  );
+  return winningCombinations.some((combination) => {
+    return combination.every((index) => board[index] === currentPlayer);
+  });
 }
 
-resetBtn.addEventListener("click", () => {
-  gameState = ["", "", "", "", "", "", "", "", ""];
-  gameActive = true;
-  currentPlayer = "X";
-  createBoard();
-});
+function highlightWinner() {
+  winningCombinations.forEach((combination) => {
+    if (combination.every((index) => board[index] === currentPlayer)) {
+      combination.forEach((index) => {
+        cells[index].classList.add("winner");
+      });
+    }
+  });
+}
 
-createBoard();
+function updateScore() {
+  if (currentPlayer === "X") {
+    scoreX++;
+    scoreXEl.textContent = scoreX;
+  } else {
+    scoreO++;
+    scoreOEl.textContent = scoreO;
+  }
+}
+
+function resetGame() {
+  board = Array(9).fill("");
+  cells.forEach((cell) => {
+    cell.textContent = "";
+    cell.classList.remove("winner");
+  });
+  currentPlayer = "X";
+  currentPlayerEl.textContent = currentPlayer;
+  statusEl.textContent = "";
+  gameActive = true;
+}
+
+function resetScore() {
+  scoreX = 0;
+  scoreO = 0;
+  scoreXEl.textContent = scoreX;
+  scoreOEl.textContent = scoreO;
+  resetGame();
+}
+
+cells.forEach((cell) => cell.addEventListener("click", handleClick));
+resetGameBtn.addEventListener("click", resetGame);
+resetScoreBtn.addEventListener("click", resetScore);

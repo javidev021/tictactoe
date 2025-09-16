@@ -1,38 +1,130 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.game-container {
   text-align: center;
-  background: #f4f4f4;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 h1 {
-  color: #333;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.board {
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.player-turn {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+#current-player {
+  color: #ff6b6b;
+  font-size: 1.3em;
+}
+
+.score {
+  display: flex;
+  gap: 20px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.game-board {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 5px;
-  justify-content: center;
-  margin: 20px auto;
+  max-width: 300px;
+  margin: 0 auto 20px;
+  background: #333;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .cell {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   background: white;
-  border: 2px solid #333;
-  font-size: 2rem;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  color: #333;
 }
 
-.cell.taken {
-  cursor: not-allowed;
+.cell:hover {
+  background: #f0f0f0;
+  transform: scale(1.05);
 }
+
+.winner {
+  background: #4ecdc4 !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.game-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
 button {
   padding: 10px 20px;
-  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #ff6b6b, #feca57);
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.game-status {
+  font-size: 1.2em;
+  margin-top: 15px;
+  font-weight: bold;
 }
